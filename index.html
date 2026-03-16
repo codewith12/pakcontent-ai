@@ -7,7 +7,7 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Arial, sans-serif; background: #0f0f1a; color: #fff; min-height: 100vh; }
-  .header { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 20px; text-align: center; border-bottom: 2px solid #00d4aa; }
+  .header { background: #1a1a2e; padding: 20px; text-align: center; border-bottom: 2px solid #00d4aa; }
   .logo { font-size: 28px; font-weight: bold; color: #00d4aa; }
   .logo span { color: #ff6b9d; }
   .tagline { font-size: 14px; color: #aaa; margin-top: 5px; }
@@ -18,8 +18,7 @@
   .type-btn { background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 8px; padding: 12px; font-size: 13px; color: #fff; cursor: pointer; text-align: left; transition: all 0.2s; }
   .type-btn:hover { border-color: #00d4aa; }
   .type-btn.active { background: #003d30; border-color: #00d4aa; color: #00d4aa; }
-  textarea, select { width: 100%; background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 8px; padding: 12px; font-size: 14px; color: #fff; font-family: Arial, sans-serif; resize: vertical; }
-  textarea { min-height: 90px; line-height: 1.6; }
+  textarea { width: 100%; background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 8px; padding: 12px; font-size: 14px; color: #fff; font-family: Arial, sans-serif; resize: vertical; min-height: 90px; line-height: 1.6; }
   .lang-row { display: flex; gap: 8px; }
   .lang-btn { flex: 1; padding: 10px; font-size: 13px; border: 1px solid #2a2a4a; border-radius: 8px; background: #0f0f1a; color: #fff; cursor: pointer; transition: all 0.2s; }
   .lang-btn.active { background: #003d30; border-color: #00d4aa; color: #00d4aa; font-weight: bold; }
@@ -37,7 +36,6 @@
   @keyframes bounce { 0%,80%,100%{transform:scale(0.7);opacity:0.5} 40%{transform:scale(1.2);opacity:1} }
   .hidden { display: none; }
   .footer { text-align: center; padding: 20px; color: #555; font-size: 12px; }
-  .badge { display: inline-block; background: #ff6b9d22; border: 1px solid #ff6b9d; color: #ff6b9d; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
 </style>
 </head>
 <body>
@@ -48,7 +46,6 @@
 </div>
 
 <div class="container">
-
   <div class="card">
     <h3>Content Type chunein:</h3>
     <div class="type-grid">
@@ -87,7 +84,6 @@
       <button class="action-btn" onclick="generate()">🔄 Dobara Generate</button>
     </div>
   </div>
-
 </div>
 
 <div class="footer">Made with ❤️ for Pakistani Businesses — PakContent AI</div>
@@ -121,14 +117,10 @@ async function generate() {
   document.getElementById('result').classList.add('hidden');
   document.getElementById('actions').classList.add('hidden');
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: getPrompt() }]
-      })
+      body: JSON.stringify({ prompt: getPrompt() })
     });
     const data = await res.json();
     const text = data.content.map(i => i.text || '').join('');
